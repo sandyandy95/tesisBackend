@@ -9,4 +9,6 @@ router.route('/:id')
 .get(getEncargado)
 .delete(delateEncargado)
 .put(updateEncargado)
+//router.route('encargado/:id')
+//.put(encargadoEstablecimiento)
 module.exports=router;

@@ -1,17 +1,19 @@
 const {Schema,model}=require('mongoose');
+const establecimiento = require('./establecimiento');
 const encargadoSchema=new Schema
 ({
-    nombreEncargado: 
-    {type: String,
-    required: true},
+    nombreEncargado: String,
     apellidoEncargado: String,
     correoEncargado: String,
-    fechaNacimientoEncargado:{
-        type: Date
-
-    },
+    fechaNacimientoEncargado:String,
     cedulaEncargado: String,
-    passwordEncargado: String
+    passwordEncargado: {
+        type:String,
+        required:true
+    },
+    establecimiento:[
+        {type: Schema.Types.ObjectId,
+        ref:'establecimiento'}],
 
 });
 module.exports=model('Encargado',encargadoSchema);

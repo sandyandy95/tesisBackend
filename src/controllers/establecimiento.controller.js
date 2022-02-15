@@ -1,4 +1,6 @@
 const establecimientoCtrl ={};
+const encargado =require('../models/encargado');
+const establecimiento = require('../models/establecimiento');
 const EstablecimientoModel=require('../models/establecimiento')
 establecimientoCtrl.getEstablecimientos=async(req,res)=>{
    const establecimientos= await EstablecimientoModel.find();
@@ -6,13 +8,13 @@ establecimientoCtrl.getEstablecimientos=async(req,res)=>{
 }
 establecimientoCtrl.createEstablecimientos=async(req,res)=>
 {
-    const {nombreEstablecimiento, encargadoEstablecimiento,
-        direccionEstablecimiento,actividadesEstablecimiento} =req.body;
+    const {nombreEstablecimiento,
+        direccionEstablecimiento,actividadesEstablecimiento, encargadoEstablecimiento} =req.body;
     const newEstablecimientoModel=new EstablecimientoModel({
         nombreEstablecimiento:nombreEstablecimiento,
-        encargadoEstablecimiento:encargadoEstablecimiento,
         direccionEstablecimiento: direccionEstablecimiento,
         actividadesEstablecimiento:actividadesEstablecimiento,
+        encargadoEstablecimiento:encargadoEstablecimiento
 
     });
     await newEstablecimientoModel.save();
@@ -32,13 +34,27 @@ establecimientoCtrl.delateEstablecimiento=async(req,res)=>{
     res.json({message:'Admin eliminado'})
 }
 establecimientoCtrl.updateEstablecimiento=async(req,res)=>{
-    const {nombreEstablecimiento,encargadoEstablecimiento,
-        direccionEstablecimiento,actividadesEstablecimiento}=req.body;
+    const {nombreEstablecimiento,
+        direccionEstablecimiento,actividadesEstablecimiento,encargadoEstablecimiento}=req.body;
     await EstablecimientoModel.findByIdAndUpdate(req.params.id,{nombreEstablecimiento,
-        encargadoEstablecimiento,
         actividadesEstablecimiento,
-        direccionEstablecimiento});
+        direccionEstablecimiento,
+        encargadoEstablecimiento});
     res.json("actualizado")
 }
+
+/*establecimientoCtrl.encargadoEstablecimiento= async(req,res)=>{ 
+    const nuevoEncargado =new encargado.findById(req.encargado._id)
+    res.send(encargado)
+
+}*/
+/*
+establecimientoCtrl.assingEncargado=async(req,res)=>{
+    const {_id}=req.params;
+    const {encargadoEstablecimiento}=req.body;
+    const encargadoUpdate=await EstablecimientoModel.findByIdAndUpdate(
+        _id,{$push:{encargadoEstablecimiento:encargadoEstablecimiento}});
+    res.send(`${encargadoUpdate.encargadoEstablecimiento}updated`)
+},*/
 
 module.exports=establecimientoCtrl;

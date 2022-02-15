@@ -1,15 +1,18 @@
 const {Schema,model, Mongoose}=require('mongoose');
+//const encargado =require('../models/encargado')
 const establecimientoSchema=new Schema
+
 ({
-    _id: Schema.Types.ObjectId,
     nombreEstablecimiento: 
     {type: String,
     require: true},
-    encargadoEstablecimiento:[
-        {type: Schema.Types.ObjectId,
-        ref:'encargado'}],
     direccionEstablecimiento: String,
     actividadesEstablecimiento:String,
+    encargadoEstablecimiento:[
+        {type: Schema.Types.ObjectId,
+        ref:'encargado'
+    }],
 
 });
-module.exports=model('Establecimiento',establecimientoSchema);
+
+module.exports= model('Establecimiento',establecimientoSchema);
