@@ -6,14 +6,12 @@ const encargadoSchema=new Schema
     apellidoEncargado: String,
     correoEncargado: String,
     fechaNacimientoEncargado:String,
-    cedulaEncargado: String,
-    passwordEncargado: {
-        type:String,
-        required:true
-    },
     establecimiento:[
         {type: Schema.Types.ObjectId,
         ref:'establecimiento'}],
+    cedulaEncargado: String,
+    passwordEncargado: String,
+    rol:String
 
 });
 module.exports=model('Encargado',encargadoSchema);

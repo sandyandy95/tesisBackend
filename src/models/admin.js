@@ -10,7 +10,9 @@ const adminSchema=new Schema
     },
     SuperAdmin: {
         type: Boolean,
-        default:true}
+        default:true},
+        passwordAdmin: String,
+        rol:String
 
 });
 module.exports=model('Admin',adminSchema);

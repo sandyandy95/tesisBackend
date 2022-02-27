@@ -1,12 +1,15 @@
 const response =require('express');
-const EncargadoPendiente=require('../models/encargadoSolicitud')
+const EncargadoPendiente=require('../models/usuario')
+const AdminPendiente=require('../models/admin')
+
 const bcrypt = require('bcrypt')
 const {generarJWT}=require('../helpers/jwt');
 const loginEncargado=async(req,res=response)=>{
     //manejo de errores
-const{nombreEncargado,correoEncargado,passwordEncargado}=req.body;
+const{nombreUsuario,correoUsuario,passwordUsuario}=req.body;
      try {
-        const encargadoPendiente=await EncargadoPendiente.findOne({correoEncargado});
+        const encargadoPendiente=await EncargadoPendiente.findOne({correoUsuario});
+        console.log("dhbf"+encargadoPendiente)
         if(!encargadoPendiente){
             return res.status(400).json({
                     
@@ -15,7 +18,7 @@ const{nombreEncargado,correoEncargado,passwordEncargado}=req.body;
                 }
             )
         }
-        const validPassword=bcrypt.compareSync(passwordEncargado,encargadoPendiente.passwordEncargado);
+        const validPassword=bcrypt.compareSync(passwordUsuario,encargadoPendiente.passwordUsuario);
         if(!validPassword)
         {
             return res.status(400).json(
@@ -23,16 +26,17 @@ const{nombreEncargado,correoEncargado,passwordEncargado}=req.body;
                     ok:false,
                     msg:'password incorrecto'
                 }
+                
             )
         }
         console.log("28")
-        const token=await generarJWT(encargadoPendiente.id,encargadoPendiente.nombreEncargado)
+        const token=await generarJWT(encargadoPendiente.id,encargadoPendiente.nombreUsuario, encargadoPendiente.rol)
         console.log("30",token);
         res.json({
             ok:true,
-            uid:encargadoPendiente.id,
-            nombreEncargado:encargadoPendiente.nombreEncargado,
-            token
+            //uid:encargadoPendiente.id,
+            //nombreUsuario:encargadoPendiente.nombreUsuario,
+            token,
         })
         
 
@@ -48,29 +52,32 @@ const{nombreEncargado,correoEncargado,passwordEncargado}=req.body;
          
      }
 }
-//const token=await generarJWT(encargadoPendiente.id,encargadoPendiente.nombreEncargado)
+
+//const token=await generarJWT(encargadoPendiente.id,encargadoPendiente.nombreUsuario)
 
 const tokenEncargado=async(req,res=response)=>{
-    const {uid,nombreEncargado}=req;
-    const token=await generarJWT(uid,nombreEncargado);
+    const {uid,nombreUsuario}=req;
+    const token=await generarJWT(uid,nombreUsuario);
    
     res.json({
         ok: true,
-        uid:uid,
-      nombreEncargado:nombreEncargado
+       // uid:uid,
+      //nombreUsuario:nombreUsuario,
+      token
         
     })
 }
 
-const registroEncargado=async(req,res=response)=>{
+/*const registroEncargado=async(req,res=response)=>{
 //manejo de errores
-const{nombreEncargado,apellidoEncargado,
-correoEncargado,fechaNacimientoEncargado,
-cedulaEncargado,passwordEncargado,
+const{nombreUsuario,apellidoEncargado,
+correoUsuario,fechaNacimientoEncargado,
+cedulaEncargado,passwordUsuario,
  establecimiento}=req.body;
 try{
-let encargadoPendiente=await EncargadoPendiente.findOne({correoEncargado});
+let encargadoPendiente=await EncargadoPendiente.findOne({correoUsuario});
 if(encargadoPendiente){
+            
     return res.status(400).json({
             
                     ok:false,
@@ -82,17 +89,17 @@ if(encargadoPendiente){
 encargadoPendiente =new EncargadoPendiente(req.body);
 //encriptar 
 const salt  =bcrypt.genSaltSync();
-encargadoPendiente.passwordEncargado=bcrypt.hashSync(passwordEncargado,salt);
+encargadoPendiente.passwordUsuario=bcrypt.hashSync(passwordUsuario,salt);
 
 
 await encargadoPendiente.save();
 //generar
-const token=await generarJWT(encargadoPendiente.id,encargadoPendiente.nombreEncargado)
+const token=await generarJWT(encargadoPendiente.id,encargadoPendiente.nombreUsuario)
 res.status(201).json({
         ok: true,
         msg:'registro',
         uid:encargadoPendiente.id,
-        nombreEncargado:encargadoPendiente.nombreEncargado,
+        nombreUsuario:encargadoPendiente.nombreUsuario,
 
         token
     })
@@ -106,9 +113,9 @@ res.status(201).json({
         }
     )
 }
-}
+}*/
 module.exports={
     loginEncargado,
     tokenEncargado,
-    registroEncargado   
+  
 }

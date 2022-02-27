@@ -1,6 +1,6 @@
 const {Router} =require('express');
 const {check} =require('express-validator')
-const { loginEncargado,tokenEncargado,registroEncargado  }=require('../controllers/auth.controller')
+const { loginEncargado,tokenEncargado, loginAdmin}=require('../controllers/auth.controller')
 const {validadCampos}=require('../middlerwares/validar-campos')
 const {validarJWT}=require('../middlerwares/valida-jwt')
 const router=Router();
@@ -12,7 +12,7 @@ validadCampos
 ],
 registroEncargado );
 */
-router.post('/new',registroEncargado );
+//router.post('/new', loginAdmin );
 router.post('/',loginEncargado);
 router.get('/renew',validarJWT, tokenEncargado );
 module.exports=router;

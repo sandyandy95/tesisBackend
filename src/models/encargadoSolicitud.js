@@ -9,11 +9,9 @@ const encargadoPendienteSchema= Schema
     cedulaEncargado: String,
     passwordEncargado: {
         type:String,
-        required:true
     },
-    establecimiento:[
-        {type: Schema.Types.ObjectId,
-        ref:'establecimiento'}],
+    passwordEncargadoConfirmacion:String
+
 
 });
 module.exports=model('EncargadoSolicitud',encargadoPendienteSchema);

@@ -1,18 +1,26 @@
 const adminCtrl ={};
 const AdminModel=require('../models/admin')
+
+const response =require('express');
+const bcrypt = require('bcrypt')
+const {generarJWT}=require('../helpers/jwt');
+
 adminCtrl.getAdmins=async(req,res)=>{
    const admins= await AdminModel.find();
     res.json(admins)
 }
 adminCtrl.createAdmins=async(req,res)=>
 {
-    const {nombreAdmin, apellidoAdmin,correoAdmin,fechaNacimientoAdmin,SuperAdmin} =req.body;
+    
+    const {nombreAdmin, apellidoAdmin,correoAdmin,fechaNacimientoAdmin,SuperAdmin,passwordAdmin,rol} =req.body;
     const newAdminModel=new AdminModel({
         nombreAdmin:nombreAdmin,
         apellidoAdmin:apellidoAdmin,
         correoAdmin: correoAdmin,
         fechaNacimientoAdmin:fechaNacimientoAdmin,
-        SuperAdmin:SuperAdmin
+        SuperAdmin:SuperAdmin,
+        passwordAdmin:passwordAdmin,
+        rol:rol
 
     });
     await newAdminModel.save();
@@ -20,8 +28,52 @@ adminCtrl.createAdmins=async(req,res)=>
     res.json({message:"note saved"})
 
 //    console.log(req.body);
-
 }
+/*const{nombreAdmin,
+    apellidoAdmin,
+    correoAdmin,
+    fechaNacimientoAdmin,
+    passwordAdmin}=req.body;
+    try{
+    let encargadoPendiente=await AdminModel.findOne({correoAdmin});
+    if(encargadoPendiente){
+                
+        return res.status(400).json({
+                
+                        ok:false,
+                        msg:'ya hay este correo'
+            }
+        )
+    }
+    
+    encargadoPendiente =new AdminModel(req.body);
+    //encriptar 
+    const salt  =bcrypt.genSaltSync();
+    encargadoPendiente.passwordAdmin=bcrypt.hashSync(passwordAdmin,salt);
+    
+    
+    await encargadoPendiente.save();
+    //generar
+    const token=await generarJWT(encargadoPendiente.id,encargadoPendiente.nombreAdmin)
+    res.status(201).json({
+            ok: true,
+            msg:'registro',
+            uid:encargadoPendiente.id,
+            nombreAdmin:encargadoPendiente.nombreAdmin,
+    
+            token
+        })
+    
+    }catch(error){
+        console.log(error)
+        res.status(500).json(
+            {
+                ok:false,
+                msg:"hable con el admin"
+            }
+        )
+    }
+    }*/
 adminCtrl.getAdmin=async(req,res)=>
 {
    const newAdminModel= await AdminModel.findById(req.params.id);
@@ -32,13 +84,13 @@ adminCtrl.delateAdmin=async(req,res)=>{
     res.json({message:'Admin eliminado'})
 }
 adminCtrl.updateAdmin=async(req,res)=>{
-    const {nombreAdmin,apellidoAdmin,correoAdmin,fechaNacimientoAdmin,
-        SuperAdmin}=req.body;
+    const {nombreAdmin,apellidoAdmin,correoAdmin,fechaNacimientoAdmin,passwordAdmin,rol}=req.body;
     await AdminModel.findByIdAndUpdate(req.params.id,{nombreAdmin,
         apellidoAdmin,
         fechaNacimientoAdmin,
         correoAdmin,
-        SuperAdmin});
+        passwordAdmin,
+    rol});
     res.json("actualizado")
 }
 
