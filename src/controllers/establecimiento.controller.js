@@ -2,10 +2,16 @@ const establecimientoCtrl ={};
 const encargado =require('../models/encargado');
 const establecimiento = require('../models/establecimiento');
 const EstablecimientoModel=require('../models/establecimiento')
+
 establecimientoCtrl.getEstablecimientos=async(req,res)=>{
-   const establecimientos= await EstablecimientoModel.find();
+    const establecimientos= await EstablecimientoModel.find({encargadoEstablecimiento:req.params.encargadoEstablecimiento})
+
     res.json(establecimientos)
-}
+ }
+/*establecimientoCtrl.getEstablecimientos=async(req,res)=>{
+   const establecimientos1= await EstablecimientoModel.find();
+    res.json(establecimientos1)
+}*/
 establecimientoCtrl.createEstablecimientos=async(req,res)=>
 {
     const {nombreEstablecimiento,
@@ -24,11 +30,11 @@ establecimientoCtrl.createEstablecimientos=async(req,res)=>
 //    console.log(req.body);
 
 }
-establecimientoCtrl.getEstablecimiento=async(req,res)=>
+/*establecimientoCtrl.getEstablecimiento=async(req,res)=>
 {
-   const newEstablecimientoModel= await EstablecimientoModel.findById(req.params.id);
+   const newEstablecimientoModel= await EstablecimientoModel.findById(req.params.id)
     res.json(newEstablecimientoModel)
-}
+}*/
 establecimientoCtrl.delateEstablecimiento=async(req,res)=>{
     await EstablecimientoModel.findByIdAndDelete(req.params.id);
     res.json({message:'Admin eliminado'})
@@ -56,5 +62,7 @@ establecimientoCtrl.assingEncargado=async(req,res)=>{
         _id,{$push:{encargadoEstablecimiento:encargadoEstablecimiento}});
     res.send(`${encargadoUpdate.encargadoEstablecimiento}updated`)
 },*/
+
+
 
 module.exports=establecimientoCtrl;

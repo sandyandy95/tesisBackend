@@ -3,7 +3,6 @@ const generarJWT =(uid,nombreEncargado,rol)=>{
     return new Promise((resolve,reject)=>{
         const payload ={uid,nombreEncargado,rol};
         jwt.sign(payload,process.env.SECRET_JW_SEED,{
-            
             expiresIn:'180s'
         },(err,token)=>{
           if(err){

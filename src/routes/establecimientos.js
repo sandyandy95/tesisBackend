@@ -6,12 +6,14 @@ const {getEstablecimientos,createEstablecimientos,
     updateEstablecimiento} = require('../controllers/establecimiento.controller');
 //const { updateOne } = require('../models/encargado');
 router.route('/')
-.get(getEstablecimientos)
+//.get(getEstablecimientos)
 .post(createEstablecimientos)
 router.route('/:id')
-.get(getEstablecimiento)
+//.get(getEstablecimiento)
 .delete(delateEstablecimiento)
 .put(updateEstablecimiento)
+router.route('/:encargadoEstablecimiento')
+.get(getEstablecimientos)
 /*router.put('/assingEncargado/:_id',assingEncargado )
 //.put(encargadoEstablecimiento)*/
 

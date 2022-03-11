@@ -5,9 +5,6 @@ const usuarioSchema=new Schema
     apellidoUsuario: String,
     correoUsuario: String,
     fechaNacimientoUsuario:String,
-    establecimiento:[
-        {type: Schema.Types.ObjectId,
-        ref:'establecimiento'}],
     cedulaUsuario: String,
     passwordUsuario: String,
     rol:String

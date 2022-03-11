@@ -1,6 +1,8 @@
 const encargadoCtrl ={};
 const EncargadoModel=require('../models/encargado')
 const EncargadoPendiente=require('../models/encargado')
+const AdminPendiente=require('../models/admin')
+
 const response =require('express');
 const bcrypt = require('bcrypt')
 const {generarJWT}=require('../helpers/jwt')
@@ -10,35 +12,11 @@ encargadoCtrl.getEncargados=async(req,res)=>{
    const encargados= await EncargadoModel.find();
     res.json(encargados)
 }
-encargadoCtrl.createEncargados=async(req,res=response)=>
-{
-    const {nombreEncargado, apellidoEncargado,correoEncargado,fechaNacimientoEncargado,cedulaEncargado,passwordEncargado,rol} =req.body;
-    let newEncargadoModel=new EncargadoModel({
-        nombreEncargado:nombreEncargado,
-        apellidoEncargado:apellidoEncargado,
-        correoEncargado: correoEncargado,
-        fechaNacimientoEncargado:fechaNacimientoEncargado,
-        cedulaEncargado: cedulaEncargado,
-        passwordEncargado:passwordEncargado,
-        rol:rol
-       
-    });
-    console.log("ke"+newEncargadoModel)
-    console.log("hola body")
-    console.log(req.body);
-    await newEncargadoModel.save();
-    res.json({message:"note saved"})
-
-//    console.log(req.body);
-
-
-}
-
-/*encargadoCtrl.createEncargados=async(req,res=response)=>{
+encargadoCtrl.createEncargados=async(req,res=response)=>{
     //manejo de errores
     const{nombreEncargado,apellidoEncargado,
     correoEncargado,fechaNacimientoEncargado,
-    cedulaEncargado,passwordEncargado}=req.body;
+    cedulaEncargado,passwordEncargado,rol}=req.body;
     try{
     let encargadoPendiente=await EncargadoPendiente.findOne({correoEncargado});
     if(encargadoPendiente){
@@ -77,7 +55,7 @@ encargadoCtrl.createEncargados=async(req,res=response)=>
             }
         )
     }
-    }*/
+    }
 
 
 encargadoCtrl.getEncargado=async(req,res)=>
@@ -92,14 +70,18 @@ encargadoCtrl.delateEncargado=async(req,res)=>{
 encargadoCtrl.updateEncargado=async(req,res)=>{
     const {nombreEncargado,apellidoEncargado,correoEncargado,fechaNacimientoEncargado,
         cedulaEncargado,passwordEncargado}=req.body;
-    await EncargadoModel.findByIdAndUpdate(req.params.id,{nombreEncargado,
+    await EncargadoModel.findByIdAndUpdate(req.params.id,{
+        nombreEncargado,
         apellidoEncargado,
         fechaNacimientoEncargado,
         correoEncargado,
         cedulaEncargado,
         passwordEncargado
     
-    });
+    }
+    
+    );
+    
     res.json("actualizado")
 }
 

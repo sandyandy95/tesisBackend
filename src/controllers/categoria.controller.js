@@ -8,9 +8,9 @@ categoriaCtrl.createCategorias=async(req,res)=>
 {
     const {nombreCategoria, descripcionCategoria} =req.body;
     const newCategoriaModel=new CategoriaModel({
+        //nombre categoria modelo
         nombreCategoria:nombreCategoria,
         descripcionCategoria:descripcionCategoria,
-
     });
     await newCategoriaModel.save();
     console.log(newCategoriaModel.nombreCategoria,newCategoriaModel.descripcionCategoria)

@@ -1,5 +1,5 @@
 const {Schema,model, Mongoose}=require('mongoose');
-//const encargado =require('../models/encargado')
+const encargado =require('../models/encargado')
 const establecimientoSchema=new Schema
 
 ({

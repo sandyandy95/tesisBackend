@@ -1,6 +1,6 @@
 const adminCtrl ={};
 const AdminModel=require('../models/admin')
-
+const AdminPendiente=require('../models/admin')
 const response =require('express');
 const bcrypt = require('bcrypt')
 const {generarJWT}=require('../helpers/jwt');
@@ -9,7 +9,7 @@ adminCtrl.getAdmins=async(req,res)=>{
    const admins= await AdminModel.find();
     res.json(admins)
 }
-adminCtrl.createAdmins=async(req,res)=>
+/*adminCtrl.createAdmins=async(req,res)=>
 {
     
     const {nombreAdmin, apellidoAdmin,correoAdmin,fechaNacimientoAdmin,SuperAdmin,passwordAdmin,rol} =req.body;
@@ -29,7 +29,7 @@ adminCtrl.createAdmins=async(req,res)=>
 
 //    console.log(req.body);
 }
-/*const{nombreAdmin,
+const{nombreAdmin,
     apellidoAdmin,
     correoAdmin,
     fechaNacimientoAdmin,
@@ -74,6 +74,51 @@ adminCtrl.createAdmins=async(req,res)=>
         )
     }
     }*/
+    adminCtrl.createAdmins=async(req,res=response)=>{
+        //manejo de errores
+        const{nombreAdmin, apellidoAdmin,correoAdmin,
+            fechaNacimientoAdmin,SuperAdmin,
+            passwordAdmin,rol}=req.body;
+        try{
+        let adminPendiente=await AdminPendiente.findOne({correoAdmin});
+        if(adminPendiente){
+            return res.status(400).json({
+                    
+                            ok:false,
+                            msg:'ya hay este correo'
+                }
+            )
+        }
+        
+        adminPendiente =new AdminPendiente(req.body);
+        //encriptar 
+        const salt  =bcrypt.genSaltSync();
+        adminPendiente.passwordAdmin=bcrypt.hashSync(passwordAdmin,salt);
+        
+        
+        await adminPendiente.save();
+        //generar
+        const token=await generarJWT(adminPendiente.id,adminPendiente.nombreAdmin)
+        res.status(201).json({
+                ok: true,
+                msg:'registro',
+                uid:adminPendiente.id,
+                nombreAdmin:adminPendiente.nombreAdmin,
+        
+                token
+            })
+        
+        }catch(error){
+            console.log(error)
+            res.status(500).json(
+                {
+                    ok:false,
+                    msg:"hable con el admin"
+                }
+            )
+        }
+        }
+
 adminCtrl.getAdmin=async(req,res)=>
 {
    const newAdminModel= await AdminModel.findById(req.params.id);
