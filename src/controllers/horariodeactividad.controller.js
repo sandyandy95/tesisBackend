@@ -1,8 +1,10 @@
 const horarioDeActividadCtrl ={};
 const HorarioDeActividadModel=require('../models/horariodeactividad')
 horarioDeActividadCtrl.getHorarioDeActividades=async(req,res)=>{
-   const horarioDeActividades= await HorarioDeActividadModel.find();
-    res.json(horarioDeActividades)
+   //const horarioDeActividades= await HorarioDeActividadModel.find();
+   const horarioDeActividades= await HorarioDeActividadModel.find({actvidadHorarioActividad:req.params.actvidadHorarioActividad});
+
+   res.json(horarioDeActividades)
 }
 horarioDeActividadCtrl.createHorarioDeActividades=async(req,res)=>
 {

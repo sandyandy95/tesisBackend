@@ -5,10 +5,12 @@ const {getHorarioDeActividades,createHorarioDeActividades,
     getHorarioDeActividad,delateHorarioDeActividad,
     updateHorarioDeActividad} = require('../controllers/horariodeactividad.controller')
 router.route('/')
-.get(getHorarioDeActividades)
+//.get(getHorarioDeActividades)
 .post(createHorarioDeActividades)
 router.route('/:id')
-.get(getHorarioDeActividad)
+//.get(getHorarioDeActividad)
 .delete(delateHorarioDeActividad)
 .put(updateHorarioDeActividad)
+router.route('/:actvidadHorarioActividad')
+.get(getHorarioDeActividades)
 module.exports=router;
